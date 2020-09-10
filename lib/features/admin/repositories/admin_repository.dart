@@ -23,7 +23,19 @@ class AdminRepository{
     try{
       List<DocumentSnapshot> productsDocsSnapshot=await AdminClient.adminClient.getAllProducts();
       List<Product> products=productsDocsSnapshot.map((e) => Product.fromDocumentSnapshot(e)).toList();
+      //print(products);
       return products;
+    }catch(error){
+      print(error);
+    }
+  }
+
+  Future<List<Product>> getCategorizedProducts(String cname)async{
+    try{
+      List<DocumentSnapshot> categorizedproductsDocsSnapshot=await AdminClient.adminClient.getCategorizedProducts(cname);
+      List<Product> categorizedProducts=categorizedproductsDocsSnapshot.map((e) => Product.fromDocumentSnapshot(e)).toList();
+      print(categorizedProducts);
+      return categorizedProducts;
     }catch(error){
       print(error);
     }

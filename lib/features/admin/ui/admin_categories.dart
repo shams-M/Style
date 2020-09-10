@@ -4,14 +4,11 @@ import 'package:style/features/admin/models/category.dart';
 import 'package:style/features/admin/providers/admin_provider.dart';
 import 'package:style/features/admin/ui/admin_widgets/admin_category_item.dart';
 import 'package:style/features/admin/ui/new_category.dart';
-import 'package:style/services/check_internet_connection.dart';
 
 class AdminCategories extends StatelessWidget {
   GlobalKey<ScaffoldState> scaffoldKey=GlobalKey();
   @override
-  initState()async{
-    await checkConnect();
-  }
+  
   @override
   Widget build(BuildContext context) {
     AdminProvider adminProvider=Provider.of<AdminProvider>(context, listen: false);
@@ -46,11 +43,5 @@ class AdminCategories extends StatelessWidget {
     );
   }
 
-  checkConnect() async {
-    bool connectResult = await CheckInternetConnection().checkInternet();
-    if(!connectResult){
-      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Please connect to internet')));
-    }
-
-  }
+  
 }

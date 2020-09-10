@@ -14,6 +14,12 @@ class AdminProvider extends ChangeNotifier{
   File catImgFile;
   List<Category> allCategories=[];
 
+  int categorySelectedIndex = -1;        // when user select category
+  setCategorySelectedIndex(int i){
+    this.categorySelectedIndex=i;
+    notifyListeners();
+  }
+
   String productName;
   String productDescription;
   String productImgUrl;
@@ -22,6 +28,13 @@ class AdminProvider extends ChangeNotifier{
   File productImgFile;
   String pcatName;  //  category name for product
   List<Product> allProducts=[];
+  List<Product> categorizedProducts=[];
+  // for product colors
+  Color pikedColor=Color(0xff884588);
+  Color currentColor=Color(0xff884588);
+  List colorsList=[];
+  String sizeValue;
+  List sizesList=[];
 
   setCategoryName(String value){
     this.categoryName=value;
@@ -54,8 +67,8 @@ class AdminProvider extends ChangeNotifier{
   }
   setPCatName(String val){
     this.pcatName=val;
+    notifyListeners();
   }
-
 
 
   uploadCategoryImgFile()async{
@@ -101,15 +114,46 @@ class AdminProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setPickedColor(Color c){
+    this.pikedColor=c;
+    notifyListeners();
+  }
+  setCurrentColor(){
+    this.currentColor=this.pikedColor;
+    colorsList.add(this.currentColor.toString());
+    notifyListeners();
+  }
+  setSizeValue(String v){
+    this.sizeValue=v;
+    notifyListeners();
+  }
+  saveSizeVal(){
+    if(this.sizeValue.isNotEmpty){
+      sizesList.add(this.sizeValue);
+      //this.sizeValue='';
+      notifyListeners();
+    }
+
+  }
+
+
+
   getAllProducts()async{
   List<Product> products=await AdminRepository.adminRepository.getAllProducts();
   this.allProducts=products;
   notifyListeners();
 }
 
+getCategorizedProducts(String cname)async{
+  List<Product> categProducts=await AdminRepository.adminRepository.getCategorizedProducts(cname);
+  this.categorizedProducts=categProducts;
+  notifyListeners();
+
+}
+
   
   Future<bool> addNewProduct()async{
-    Product product=Product(name: this.productName,description: this.productDescription,imageUrl: this.productImgUrl,isAvailable:this.productIsAvailable,price: this.productPrice,categoryname: this.pcatName);
+    Product product=Product(name: this.productName,description: this.productDescription,imageUrl: this.productImgUrl,isAvailable:this.productIsAvailable,price: this.productPrice,categoryname: this.pcatName,productColors: this.colorsList,productSizes: this.sizesList);
     String pid=await AdminClient.adminClient.addNewProduct(product);
     if(pid!=null){
       getAllProducts();

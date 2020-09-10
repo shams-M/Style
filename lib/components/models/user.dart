@@ -13,7 +13,7 @@ class User{
     return {
       uEmail:this.email,
       uPassword:this.password,
-      'isAdmin':this.isAdmin,
+      uAdmin:this.isAdmin,
       uImgUrl:this.userImgUrl
     };
   }
@@ -21,8 +21,7 @@ class User{
     this.documentUserId=documentSnapshot.documentID;
     this.email=documentSnapshot.data[uEmail];
     this.password=documentSnapshot.data[uPassword];
-    this.isAdmin=documentSnapshot.data[isAdmin];
+    this.isAdmin=documentSnapshot.data[uAdmin];
     this.userImgUrl=documentSnapshot.data[uImgUrl];
   }
-
 }

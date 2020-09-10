@@ -1,5 +1,5 @@
 
-import 'package:connectivity/connectivity.dart';
+/*import 'package:connectivity/connectivity.dart';
 
 class CheckInternetConnection{
 
@@ -10,3 +10,4 @@ class CheckInternetConnection{
     }
   }
 }
+*/

@@ -76,7 +76,9 @@ class UserClient {
       DocumentSnapshot documentSnapshot =await firestore
           .collection(usersCollectionName)
           .document(documentId).get();
-          if(documentSnapshot.data[isAdmin]==1){
+          
+          if(documentSnapshot.data[uAdmin]==1){
+            print(documentSnapshot.data[isAdmin]);
             return true;
           }
           else{

@@ -103,6 +103,16 @@ class AdminClient{
       print(error);
       }
   }
+  
+  Future<List<DocumentSnapshot>> getCategorizedProducts(String categoryName)async{
+   try{
+     QuerySnapshot querySnapshot=await firestore.collection(producstCollectionName).where(pCategoryname,isEqualTo: categoryName).getDocuments();
+     List<DocumentSnapshot> categorizedProdustDocsSnapshot=querySnapshot.documents;
+     return categorizedProdustDocsSnapshot;
+   }catch(error){
+     print(error);
+   }
+  }
   // ! operations on products
 
 

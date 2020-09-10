@@ -25,14 +25,12 @@ class CreateAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController=TextEditingController();
-    TextEditingController passController=TextEditingController();
-
+  
     UserProvider userProvider=Provider.of<UserProvider>(context,listen:false);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Create Account'),
       ),
       body: Center(
         child: Padding(
@@ -53,7 +51,9 @@ class CreateAccount extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: TextFormField(
-                    controller: emailController,
+                    onChanged: (val){
+                      userProvider.setEmail(val);
+                    },
                     decoration: InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(
@@ -67,7 +67,9 @@ class CreateAccount extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: TextFormField(
-                    controller: passController,
+                    onChanged: (val){
+                      userProvider.setPassword(val);
+                    },
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(
@@ -81,7 +83,7 @@ class CreateAccount extends StatelessWidget {
                 GestureDetector(
                   child: Container(
                     child: Text(
-                      'Create account',
+                      'Create Account',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
@@ -95,7 +97,7 @@ class CreateAccount extends StatelessWidget {
                   ),
                   onTap: () {
                     
-                     userProvider.addNewUserInfo(emailController.text, passController.text);
+                     userProvider.addNewUserInfo(userProvider.email, userProvider.password);
                   },
                 ),
               ],

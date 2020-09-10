@@ -29,9 +29,9 @@ class UserProvider extends ChangeNotifier{
       
     }
 
-    Future<bool> isAdmin()async{
-    String iserId=await Auth.auth.signInUsingEmailAndPassword(this.email, this.password);
-      bool s=await UserClient.userClient.isAdmin(iserId);
+    Future<bool> isAdmin(String useremail,String userpassword)async{
+    String userId=await Auth.auth.signInUsingEmailAndPassword(useremail,userpassword);
+      bool s=await UserClient.userClient.isAdmin(userId);
       return s;
     }
     

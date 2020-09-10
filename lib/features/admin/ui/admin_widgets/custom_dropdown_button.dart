@@ -13,16 +13,18 @@ class CustomDropDownButton extends StatefulWidget {
 class _CustomDropDownButtonState extends State<CustomDropDownButton> {
   // Default Drop Down Item.
   String dropdownValue = 'Clothes';
+  
  
   // To show Selected Item in Text.
   String holder = '' ;
+  List <String> catgName = [];
  
-  List <String> catgName = [
+  /*List <String> catgName = [
     'Clothes', 
     'Jewellery', 
     'HandBags', 
     'Shoes', 
-    ] ;
+    ] ;*/
  
   void getDropDownItem(){
  
@@ -34,6 +36,11 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
   @override
   Widget build(BuildContext context) {
     AdminProvider adminProvider=Provider.of<AdminProvider>(context,listen:false);
+    adminProvider.getAllCategories();
+    List<Category> categ=adminProvider.allCategories;
+    for (var item in categ) {
+      catgName.add(item.name);
+    }
     return Scaffold(
       body: Center(
         child :
@@ -49,10 +56,10 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
               height: 2,
               color: Colors.deepPurpleAccent,
             ),
-            onChanged: (String data) {
+            onChanged: (val) {
               setState(() {
-                dropdownValue = data;
-                adminProvider.setPCatName(data);
+                dropdownValue = val;
+                adminProvider.setPCatName(val);
               });
             },
             items: catgName.map<DropdownMenuItem<String>>((String value) {

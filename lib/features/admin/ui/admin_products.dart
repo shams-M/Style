@@ -4,6 +4,7 @@ import 'package:style/components/models/product.dart';
 import 'package:style/features/admin/providers/admin_provider.dart';
 import 'package:style/features/admin/ui/admin_widgets/admin_product_item.dart';
 import 'package:style/features/admin/ui/new_product.dart';
+import 'package:style/values/colors.dart';
 
 class AdminProducts extends StatelessWidget {
   GlobalKey<ScaffoldState> scaffoldKeyAdminProduct = GlobalKey();
@@ -14,44 +15,78 @@ class AdminProducts extends StatelessWidget {
         Provider.of<AdminProvider>(context, listen: false);
     adminProvider.getAllProducts();
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       key: scaffoldKeyAdminProduct,
       appBar: AppBar(
         title: Text('Products Manag.'),
       ),
       body: Consumer<AdminProvider>(
-        builder: (context, adminProvider, wigdet) {
-          List<Product> allprod = adminProvider.allProducts;
-          if (allprod.isEmpty) {
+        builder: (context, myadminProvider, wigdet) {
+          List<Product> allprod = myadminProvider.allProducts;
+          if (allprod.isEmpty || allprod == null) {
             return Center(
                 child: CircularProgressIndicator(
-              //backgroundColor: Colors.pink[500],
-            ));
+                    //backgroundColor: Colors.pink[500],
+                    ));
           } else {
-            return GridView.builder(
-              itemCount: allprod.length,
+            return GridView.count(
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 2 / 3,
+              crossAxisCount: 2,
+              children: allprod
+                  .map(
+                    (e) => Dismissible(
+                      key: Key(e.documentId),
+                      onDismissed: (direction) {
+                        myadminProvider.deleteProduct(e.documentId);
+                        scaffoldKeyAdminProduct.currentState.showSnackBar(SnackBar(
+                            content: Text(
+                                'The product has been removed successfully')));
+                      },
+                      background: Container(
+                        color: deleteColor,
+                      ),
+                      child: AdminProductItem(
+                        product: e,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            );
+            /*GridView.builder(
+                itemCount: allprod.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),
-                itemBuilder: (context,index){
-                    return AdminProductItem(
-                      product: allprod[index],
-                    );
-                });
-            /*
-              ListView.builder(
-                  itemCount: allprod.length,
-                  itemBuilder: (context, index) {
-                    return AdminProductItem(
-                      product: allprod[index],
-                    );
-                  });*/
+                itemBuilder: (context, index) {
+                  final p = allprod[index];
+                  return Dismissible(
+                    key: Key(p.documentId),
+                    onDismissed: (direction) {
+                      myadminProvider.deleteProduct(p.documentId);
+                      scaffoldKeyAdminProduct.currentState.showSnackBar(SnackBar(
+                          content: Text(
+                              'The product has been removed successfully')));
+                    },
+                    background: Container(
+                      color: deleteColor,
+                    ),
+                    child: AdminProductItem(
+                      product: p,
+                    ),
+                  );
+                });*/
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => NewProduct()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              adminProvider.colorsList=[];
+              adminProvider.sizesList=[];
+              return NewProduct();
+            }));
           }),
     );
   }

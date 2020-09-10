@@ -19,12 +19,15 @@
   String pImageUrl='imageUrl';
   String pIsAvailable='isAvailable';
   String pCategoryname='Categoryname';
+  String pColors='productColors';
+  String pSizes='productSizes';
+
   //String pCategoryid='Categoryid';
 
   // for user
   final String uEmail='email';
   final String uPassword='password';
-  final String isAdmin='isAdmin';
+  final String uAdmin='isAdmin';
   final String uImgUrl='UserImg';
 
   // for order
@@ -33,5 +36,7 @@
   final String oUserId='userId';        // id of user who make an order
   final String oProducts='productsMap';  // products that in an order
 
+  String styleLogo='assets/images/mylogo.png';
+  String styleLogoUrl='https://firebasestorage.googleapis.com/v0/b/flutter-training-a9685.appspot.com/o/otherImgs%2Fmylogo.png?alt=media&token=68586a44-611f-4d1c-b461-47941598af41';
 
 

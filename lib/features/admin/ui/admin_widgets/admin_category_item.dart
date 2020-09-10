@@ -45,7 +45,6 @@ class EditCategory extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    String cimgUrl;
     double screenHieght = MediaQuery.of(context).size.height;
     AdminProvider adminProvider =
         Provider.of<AdminProvider>(context, listen: false);
