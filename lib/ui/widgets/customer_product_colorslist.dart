@@ -4,10 +4,10 @@ import 'package:style/features/admin/providers/admin_provider.dart';
 import 'package:style/features/providers/userProvider.dart';
 import 'package:style/values/colors.dart';
 
-class ProductColors extends StatelessWidget {
+class CustomerProductColors extends StatelessWidget {
   Widget widget;
   List colorsList;
-  ProductColors({this.colorsList});
+  CustomerProductColors({this.colorsList});
   @override
   Widget build(BuildContext context) {
     return showColors(context, colorsList);
@@ -16,6 +16,7 @@ class ProductColors extends StatelessWidget {
   showColors(BuildContext context, List stringColorsList) {
     AdminProvider adminProvider =
         Provider.of<AdminProvider>(context, listen: false);
+    UserProvider userProvider=Provider.of<UserProvider>(context,listen: false);
 
     List<Color> colorsList = [];
     for (var item in stringColorsList) {
@@ -27,10 +28,10 @@ class ProductColors extends StatelessWidget {
     if (colorsList != null && colorsList.isNotEmpty) {
       widget = Container(
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: userProvider.admin==true?Colors.grey[200]:null,
           borderRadius: BorderRadius.circular(8),
         ),
-        height: 88,
+        height: userProvider.admin==true?88:45,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: colorsList.length,
@@ -45,12 +46,12 @@ class ProductColors extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                             color: colorsList[index],
                           )),
-                      IconButton(
+                      userProvider.admin==true?IconButton(
                           icon: Icon(Icons.remove_circle_outline),
                           color: deleteColor,
                           onPressed: () {
                             adminProvider.removeItemFromColorList(index);
-                          }),
+                          }):Container(width: 0,height: 0,),
                     ],
                   ),
                 )

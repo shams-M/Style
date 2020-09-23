@@ -13,6 +13,8 @@ final Color gradientColor1=Color(0xffFF7B9C);
 final Color gradientColor2=Color(0xffFFC759);
 final Color svgIconsColor=Colors.white;
 final Color deleteColor=Color(0xffD4088C);
+final Color editColor=Color(0xff2d61d2);
+final Color notificationColor=Color(0xffe50000);
 
 const selectedTextColor = Color(0xffD4088C);
 const unselectedTextColor = Color(0xFF535353);

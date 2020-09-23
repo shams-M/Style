@@ -4,11 +4,11 @@ import 'package:style/features/admin/providers/admin_provider.dart';
 import 'package:style/features/providers/userProvider.dart';
 import 'package:style/values/colors.dart';
 
-class ProductSizes extends StatelessWidget {
+class CustomerProductSizes extends StatelessWidget {
   Widget widget;
 
   List sizesList;
-  ProductSizes({this.sizesList});
+  CustomerProductSizes({this.sizesList});
   @override
   Widget build(BuildContext context) {
     return showSizes(context, sizesList);
@@ -22,10 +22,9 @@ class ProductSizes extends StatelessWidget {
     if (sizesList != null && sizesList.isNotEmpty) {
       widget = Container(
         decoration: BoxDecoration(
-          color: Colors.grey[200],
           borderRadius: BorderRadius.circular(8),
         ),
-        height: 93,
+        height: 45,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: sizesList.length,
@@ -46,12 +45,6 @@ class ProductSizes extends StatelessWidget {
                         color: Colors.grey[200],
                         border: Border.all(width: 2, color: Color(0xff8D61D1))),
                   ),
-                  IconButton(
-                          icon: Icon(Icons.remove_circle_outline),
-                          color: deleteColor,
-                          onPressed: () {
-                            adminProvider.removeItemFromSizeList(index);
-                          }),
                 ]),
               );
             }),

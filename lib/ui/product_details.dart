@@ -6,6 +6,9 @@ import 'package:style/components/models/product.dart';
 import 'package:style/features/admin/providers/admin_provider.dart';
 import 'package:style/features/admin/ui/admin_widgets/product_colorslist.dart';
 import 'package:style/features/admin/ui/admin_widgets/product_sizeslist.dart';
+import 'package:style/features/providers/cartProvider.dart';
+import 'package:style/ui/widgets/Customer_product_sizeslist.dart';
+import 'package:style/ui/widgets/customer_product_colorslist.dart';
 import 'package:style/values/colors.dart';
 
 class ProductDetails extends StatelessWidget {
@@ -15,6 +18,7 @@ class ProductDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     AdminProvider adminProvider =
         Provider.of<AdminProvider>(context, listen: false);
+    //CartProvider cartProvider=Provider.of<CartProvider>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(product.name),
@@ -58,30 +62,34 @@ class ProductDetails extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          ProductColors(
+          CustomerProductColors(
             colorsList: product.productColors,
           ),
           SizedBox(
             height: 10,
           ),
-          ProductSizes(
+          CustomerProductSizes(
             sizesList: product.productSizes,
           ),
           SizedBox(
             height: 10,
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: PRIMARY_COLOR,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: RaisedButton(
-              color: Colors.transparent,
-              onPressed: null,
-              child: Text(
-                'Add to Cart',
-                style: TextStyle(color: Colors.white,fontSize: 20),
+          GestureDetector(onTap: (){
+            //cartProvider.addNewItemToCart(product);
+          },
+            child: Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              height: 45,
+              decoration: BoxDecoration(
+                color: PRIMARY_COLOR,
+                borderRadius: BorderRadius.circular(10),
               ),
+              child: Text(
+                  'Add to Cart',
+                  style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
+                ),
+
             ),
           ),
         ],

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:style/features/admin/providers/admin_provider.dart';
-import 'package:style/ui/categorized_products.dart';
 import 'package:style/ui/widgets/categorries.dart';
 import 'package:style/ui/widgets/style_drawer.dart';
 import 'package:style/ui/widgets/style_appbar.dart';
@@ -22,6 +19,7 @@ class Shop extends StatelessWidget {
             Expanded(flex:5, child:ShopProducts(),),
 
           ],
-        ));
+        ),
+    );
   }
 }

@@ -15,8 +15,9 @@ class NewCategory extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: Text('New Category')),
         body: Container(
-          margin: EdgeInsets.fromLTRB(20,screenHieght * 0.1,20,screenHieght * 0.1),
-          height: screenHieght *0.75,
+          margin: EdgeInsets.fromLTRB(
+              20, screenHieght * 0.1, 20, screenHieght * 0.1),
+          height: screenHieght * 0.75,
           child: Padding(
               padding: const EdgeInsets.fromLTRB(14.0, 20, 14, 20),
               child: Column(
@@ -43,14 +44,14 @@ class NewCategory extends StatelessWidget {
                           source: ImageSource.gallery,
                           maxWidth: 300,
                           maxHeight: 300);
-                      print(imageFile.path);
                       File file = File(imageFile.path);
+                      print(imageFile.path);
                       adminProvider.setcatImgFile(file);
                       adminProvider.uploadCategoryImgFile();
                     }, child: Consumer<AdminProvider>(
                       builder: (context, value, child) {
                         String imageUrl = value.categoryImgUrl;
-                        if (imageUrl == null|| imageUrl=='') {
+                        if (imageUrl == null || imageUrl == '') {
                           return Container(
                             height: 300,
                             width: 300,
@@ -58,11 +59,17 @@ class NewCategory extends StatelessWidget {
                           );
                         } else {
                           adminProvider.setCatImgUrl(imageUrl);
-                          return CachedNetworkImage(placeholder: (context,s)=>LinearProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.pink),value: 5,),
-                              imageUrl: imageUrl,
-                              height: 300,
-                              width: 300,
-                            );
+                          return CachedNetworkImage(
+                            placeholder: (context, s) =>
+                                LinearProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.pink),
+                              value: 5,
+                            ),
+                            imageUrl: imageUrl,
+                            height: 300,
+                            width: 300,
+                          );
                         }
                       },
                     )),
@@ -71,12 +78,12 @@ class NewCategory extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
-                          bool result = await Provider.of<AdminProvider>(context,
-                              listen: false)
-                              .addNewCategory();
+                        bool result = await Provider.of<AdminProvider>(context,
+                                listen: false)
+                            .addNewCategory();
 
-                          print(result);
-                          Navigator.of(context).pop();
+                        print(result);
+                        Navigator.of(context).pop();
                       },
                       child: Container(
                         alignment: Alignment.center,

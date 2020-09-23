@@ -15,7 +15,7 @@ class AdminCategoryItem extends StatelessWidget {
     return Dismissible(
         onDismissed: (direction) {
           Provider.of<AdminProvider>(context, listen: false)
-              .deleteCategory(category.documentId);
+              .deleteCategory(category);
         },
         key: UniqueKey(),
         child: Card(
@@ -92,7 +92,7 @@ class EditCategory extends StatelessWidget {
                       },
                       child: Consumer<AdminProvider>(builder: (context,value,widget){
                           
-                            return CachedNetworkImage(placeholder:(context,srt) =>CircularProgressIndicator(value: 10,),imageUrl: value.categoryImgUrl,height: 300,width: 300,);
+                            return CachedNetworkImage(placeholder:(context,srt) =>CircularProgressIndicator(value: 5,),imageUrl: value.categoryImgUrl,height: 300,width: 300,);
 
                       },),
                     ),

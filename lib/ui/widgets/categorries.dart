@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:style/features/admin/models/category.dart';
 import 'package:style/features/admin/providers/admin_provider.dart';
-import 'package:style/ui/c_shop.dart';
-import 'package:style/ui/categorized_products.dart';
-import 'package:style/ui/shop_products.dart';
+import 'package:style/ui/shop.dart';
 
 import '../../values/colors.dart';
 
@@ -48,16 +46,16 @@ class Categories extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color:
-                                    adminProvider.categorySelectedIndex == index
+                                    adminProvider.categorySelectedName == cat[index].name
                                         ? selectedTextColor
                                         : unselectedTextColor,
                               ),
                             ),
                           ]),
                       onTap: () {
-                        adminProvider.setCategorySelectedIndex(index);
+                        adminProvider.setCategorySelectedName(cat[index].name);
                         Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                          return C_Shop(cName: cat[index].name,);
+                          return Shop();
                         }));
 
                       },

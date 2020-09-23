@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:string_validator/string_validator.dart';
 import 'package:style/features/admin/models/category.dart';
 import 'package:style/components/models/product.dart';
 import 'package:style/features/admin/repositories/admin_client.dart';
@@ -14,27 +15,28 @@ class AdminProvider extends ChangeNotifier{
   File catImgFile;
   List<Category> allCategories=[];
 
-  int categorySelectedIndex = -1;        // when user select category
-  setCategorySelectedIndex(int i){
-    this.categorySelectedIndex=i;
-    notifyListeners();
-  }
+  String categorySelectedName='';  // when user select category
 
-  String productName;
-  String productDescription;
+
+  String productName='';
+  String productDescription='';
   String productImgUrl;
-  double productPrice;
+  double productPrice=0;
   bool productIsAvailable=true;
   File productImgFile;
-  String pcatName;  //  category name for product
+  String pcatName; //  category name for product
+  String cname=''; /// for edit product to show it in dropDownButton
   List<Product> allProducts=[];
-  List<Product> categorizedProducts=[];
   // for product colors
   Color pikedColor=Color(0xff884588);
   Color currentColor=Color(0xff884588);
   List colorsList=[];
   String sizeValue;
   List sizesList=[];
+  Product selectedProduct;
+
+  GlobalKey<FormState> newProducFormtKey=GlobalKey();
+
 
   setCategoryName(String value){
     this.categoryName=value;
@@ -46,27 +48,46 @@ class AdminProvider extends ChangeNotifier{
     this.categoryImgUrl=val;
   }
 
+  setCategorySelectedName(String v){
+    this.categorySelectedName=v;
+    notifyListeners();
+  }
+
 
   setproductName(String value){
     this.productName=value;
+    notifyListeners();
   }
   setproductDescription(String value){
     this.productDescription=value;
+    notifyListeners();
   }
   setproductPrice(String value){
     this.productPrice=double.parse(value);
+    notifyListeners();
   }
   setproductIsAvailable(bool value){
     this.productIsAvailable=value;
+    notifyListeners();
   }
   setproductImgFile(File file){
     this.productImgFile=file;
+    notifyListeners();
   }
   setProductImgUrl(String val){
     this.productImgUrl=val;
+    notifyListeners();
   }
   setPCatName(String val){
     this.pcatName=val;
+    notifyListeners();
+  }
+  setCname(String val){
+    this.cname=val;
+    notifyListeners();
+  }
+  setSelectedProduct(Product p){
+    this.selectedProduct=p;
     notifyListeners();
   }
 
@@ -102,8 +123,8 @@ class AdminProvider extends ChangeNotifier{
     getAllCategories();
   }
   
-  deleteCategory(String documentId)async{
-    await AdminClient.adminClient.deleteCategory(documentId);
+  deleteCategory(Category category)async{
+    await AdminClient.adminClient.deleteCategory(category);
     getAllCategories();
   }
 
@@ -123,8 +144,25 @@ class AdminProvider extends ChangeNotifier{
     colorsList.add(this.currentColor.toString());
     notifyListeners();
   }
+  setColorsList(List cl){
+    this.colorsList=cl;
+    notifyListeners();
+  }
+  removeItemFromColorList(int index){
+    this.colorsList.removeAt(index);
+    notifyListeners();
+  }
+
   setSizeValue(String v){
     this.sizeValue=v;
+    notifyListeners();
+  }
+  setSizesList(List sl){
+    this.sizesList=sl;
+    notifyListeners();
+  }
+  removeItemFromSizeList(int index){
+    this.sizesList.removeAt(index);
     notifyListeners();
   }
   saveSizeVal(){
@@ -139,17 +177,19 @@ class AdminProvider extends ChangeNotifier{
 
 
   getAllProducts()async{
-  List<Product> products=await AdminRepository.adminRepository.getAllProducts();
-  this.allProducts=products;
+    if(this.categorySelectedName==''){
+      List<Product> products1=await AdminRepository.adminRepository.getAllProducts();
+      this.allProducts=products1;
+    }
+    else{
+      List<Product> products2=await AdminRepository.adminRepository.getCategorizedProducts(this.categorySelectedName);
+      this.allProducts=products2;
+    }
+
   notifyListeners();
 }
 
-getCategorizedProducts(String cname)async{
-  List<Product> categProducts=await AdminRepository.adminRepository.getCategorizedProducts(cname);
-  this.categorizedProducts=categProducts;
-  notifyListeners();
 
-}
 
   
   Future<bool> addNewProduct()async{
@@ -165,15 +205,32 @@ getCategorizedProducts(String cname)async{
     
   }
  
-  editProduct(Product product)async{
+  editProduct()async{
+    Product product=Product(documentId: selectedProduct.documentId,name: this.productName,description: this.productDescription,imageUrl: this.selectedProduct.imageUrl,isAvailable:this.productIsAvailable,price: this.productPrice,categoryname: this.pcatName,productColors: this.colorsList,productSizes: this.sizesList);
     await AdminClient.adminClient.editProduct(product);
+    print(product);
     getAllProducts();
   }
   
-  deleteProduct(String documentId)async{
-    await AdminClient.adminClient.deleteProduct(documentId);
+  deleteProduct(Product product)async{
+    await AdminClient.adminClient.deleteProduct(product);
     getAllProducts();
   }
+
+  String validatePND(String val,String labelname){  // validate for product name or product description
+    String message = '';
+    message = isNull(val) || val == '' ? '$labelname is required' : null;
+    notifyListeners();
+    return message;
+  }
+  String validatePrice(String val,String labelname){
+    String message = '';
+    message = isNull(val) || val == '' ? '$labelname is required' : !isNumeric(val)?'$labelname must be number':null;
+    notifyListeners();
+    return message;
+
+  }
+
 
   
    

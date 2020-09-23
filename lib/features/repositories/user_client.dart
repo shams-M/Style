@@ -68,23 +68,14 @@ class UserClient {
     }
   }
 
-  
+
 
   // this method is for user to show his info // is is not complete yet
-  Future<bool> isAdmin(String documentId) async {
+  Future<DocumentSnapshot> isAdmin(String documentId) async {
     try {
-      DocumentSnapshot documentSnapshot =await firestore
-          .collection(usersCollectionName)
-          .document(documentId).get();
-          
-          if(documentSnapshot.data[uAdmin]==1){
-            print(documentSnapshot.data[isAdmin]);
-            return true;
-          }
-          else{
-            return false;
-          }
-         
+      DocumentSnapshot documentSnapshot =await firestore.collection(usersCollectionName).document(documentId).get();
+      return documentSnapshot;
+
     } catch (e) {
       print(e);
     }

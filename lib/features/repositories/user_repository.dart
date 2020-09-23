@@ -6,7 +6,10 @@ class UserRepository {
   UserRepository._();
   static final UserRepository userRepository = UserRepository._();
 
-  getUserInfo(){
+  Future<User> getUserInfo(String documentId)async{
+    DocumentSnapshot dc=await UserClient.userClient.isAdmin(documentId);
+    User user=User.fromDocumentSnapshot(dc);
+    return user;
 
   }
 }

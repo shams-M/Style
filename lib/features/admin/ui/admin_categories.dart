@@ -8,8 +8,6 @@ import 'package:style/features/admin/ui/new_category.dart';
 class AdminCategories extends StatelessWidget {
   GlobalKey<ScaffoldState> scaffoldKey=GlobalKey();
   @override
-  
-  @override
   Widget build(BuildContext context) {
     AdminProvider adminProvider=Provider.of<AdminProvider>(context, listen: false);
     adminProvider.getAllCategories();

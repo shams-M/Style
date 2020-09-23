@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style/features/admin/models/category.dart';
 import 'package:style/features/admin/providers/admin_provider.dart';
 import 'package:style/values/strings.dart';
@@ -10,10 +11,10 @@ import '../login.dart';
 import '../shop.dart';
 
 class StyleDrawer extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    AdminProvider adminProvider =
-        Provider.of<AdminProvider>(context, listen: false);
+    AdminProvider adminProvider = Provider.of<AdminProvider>(context, listen: false);
     adminProvider.getAllCategories();
     return Drawer(
       child: ListView(
@@ -31,6 +32,7 @@ class StyleDrawer extends StatelessWidget {
 
             ),
             onTap: (){
+              adminProvider.setCategorySelectedName('');
               Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return Shop();
@@ -61,8 +63,14 @@ class StyleDrawer extends StatelessWidget {
                             backgroundImage:
                                 CachedNetworkImageProvider(e.imageUrl),
                           ),
-                          title: Text(e.name),
-                          onTap: () {},
+                          title: Text(e.name,style: TextStyle(color: adminProvider.categorySelectedName==e.name?selectedTextColor:unselectedTextColor),),
+                          onTap: () {
+                            adminProvider.setCategorySelectedName(e.name);
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                              return Shop();
+                            }));
+                          },
                         ),
                       )
                       .toList(),
@@ -76,6 +84,7 @@ class StyleDrawer extends StatelessWidget {
             color: ACCENT_COLOR,
           ),
           ListTile(
+
             title: Text("Login"),
             leading: Icon(
               Icons.account_circle,

@@ -46,9 +46,13 @@ class AdminClient{
     }
   }
 
-  deleteCategory(String documentId)async{
+  deleteCategory(Category category)async{
     try{
-        firestore.collection(categoriesCollectionName).document(documentId).delete();
+      if(category.imageUrl!=null){
+        StorageReference storageReference=await firebaseStorage.getReferenceFromUrl(category.imageUrl);
+        storageReference.delete();
+      }
+        firestore.collection(categoriesCollectionName).document(category.documentId).delete();
     }catch(error){
       print(error);
     }
@@ -68,7 +72,6 @@ class AdminClient{
 
   // operations on products
   Future<String> addNewProduct(Product product)async{
-    print(product.toJson());
     try{
         DocumentReference documentReference=
         await firestore.collection(producstCollectionName).add(product.toJson());
@@ -86,9 +89,15 @@ class AdminClient{
       }
   }
  
-  deleteProduct(String documentId)async{
+  deleteProduct(Product product)async{
     try{
-      firestore.collection(producstCollectionName).document(documentId).delete();
+      String imgUrl=product.imageUrl;
+      if(imgUrl!=null){
+        StorageReference storageReference=await firebaseStorage.getReferenceFromUrl(imgUrl);
+        await storageReference.delete();
+      }
+      firestore.collection(producstCollectionName).document(product.documentId).delete();
+
     }catch(error){
       print(error);
       }
